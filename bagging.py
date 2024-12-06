@@ -145,6 +145,6 @@ print(f"\nThe accuracy of the Bagging model on the Titanic dataset is: {accuracy
 """
 
 output_name = input("\nEnter the name to save the .csv file: ")
-output_dataset = df.to_csv(f"./{output_name}.csv", index=False)
+output_dataset = df.to_csv(f"./save/{output_name}.csv", index=False)
 
 print(f"\nThe dataset has been saved as '{output_name}.csv'")
