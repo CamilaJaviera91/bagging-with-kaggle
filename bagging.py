@@ -9,6 +9,7 @@ from sklearn.metrics import accuracy_score           # Calculates the accuracy o
 from sklearn.impute import SimpleImputer             # Handles missing (NaN) values in the dataset
 from sklearn.preprocessing import LabelEncoder       # Encodes categorical labels (non-numeric variables) into numeric values
 from kaggle_connect import kaggle_connect            # Custom function to fetch the dataset using Kaggle API
+from google_sheets_utils import csv_to_sheets        # Custom function to transform .csv into a spreadsheet
 
 """
 2. Load and explore the dataset
@@ -148,3 +149,9 @@ output_name = input("\nEnter the name to save the .csv file: ")
 output_dataset = df.to_csv(f"./save/{output_name}.csv", index=False)
 
 print(f"\nThe dataset has been saved as '{output_name}.csv'")
+
+"""
+8. Save data set into google spreadsheet
+"""
+
+csv_to_sheets()
