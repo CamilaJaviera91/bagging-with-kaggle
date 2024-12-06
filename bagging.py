@@ -127,3 +127,15 @@ bagging_model = BaggingClassifier(
 
 # Train the model
 bagging_model.fit(X_train, y_train)
+
+"""
+6. Evaluate the model
+Measure the accuracy of the model on the test set.
+"""
+
+# Make predictions on the test set
+y_pred = bagging_model.predict(X_test)
+
+# Calculate the accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print(f"\nThe accuracy of the Bagging model on the Titanic dataset is: {accuracy:.2f}")
