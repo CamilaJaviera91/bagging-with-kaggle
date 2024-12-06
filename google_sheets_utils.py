@@ -15,7 +15,7 @@ FOLDER = './'
 
 #spreadsheet ID (you can find it in the URL of your Google Sheet example: https://docs.google.com/spreadsheets/d/1aBcD1234EfGhI56789JKLMnOpQrStUvWxYz/edit#gid=0)
 #"1aBcD1234EfGhI56789JKLMnOpQrStUvWxYz" this is the id that we need
-SPREADSHEET_ID = 'vsfGazjkHf8x2soh53kJJzuUYqyuA_ZyiuZU'
+SPREADSHEET_ID = '1PZZOW--vsfGazjkHf8x2soh53kJJzuUYqyuA_ZyiuZU'
 
 #path to the credentials file
 #the credentials looks like this:
@@ -42,3 +42,35 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
 
 #load the credentials from the JSON file
 creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+
+#create a googlesheet from a .csv file
+def csv_to_sheets():
+    
+    # Read the .csv file
+    name = input("Name of the csv file: ")
+    df = pd.read_csv(f"{FOLDER}save/{name}.csv")
+    # print(df)
+    try:
+        service = build('sheets', 'v4', credentials=creds)
+
+        data = [df.columns.tolist()] + df.to_numpy(dtype=str).tolist()
+        # Prepare the range where the data will be inserted
+        body = {
+            'values': data
+        }
+
+        # Write data to the spreadsheet
+        result = service.spreadsheets().values().update(
+            spreadsheetId=SPREADSHEET_ID,
+            range='Sheet1!A1',  # Modify this based on where you want to insert the data
+            valueInputOption='USER_ENTERED',
+            body=body
+        ).execute()
+
+        print(f"{result.get('updatedCells')} cells updated.")
+
+    except HttpError as error:
+        print(f"An error occurred: {error}")
+
+
+csv_to_sheets()
