@@ -105,4 +105,10 @@ target_column = input("\nEnter the column to be used as the target variable: ")
 # Split the data into features (X) and target (y)
 X = df.drop(target_column, axis=1)
 y = df[target_column]
-        
+
+"""
+4. Split the data into training and testing sets
+Ensures fair evaluation of the model
+"""
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
