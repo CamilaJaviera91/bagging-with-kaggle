@@ -71,6 +71,3 @@ def csv_to_sheets():
 
     except HttpError as error:
         print(f"An error occurred: {error}")
-
-
-csv_to_sheets()
