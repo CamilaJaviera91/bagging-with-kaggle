@@ -41,3 +41,40 @@ pip install -r requirements.txt
 ### 4. Configure Google Sheets API:
 - Follow [Google Sheets API documentation](https://developers.google.com/sheets/api/guides/concepts) to set up credentials.
 - Place the credentials in the project directory.
+
+## Usage
+
+### 1. Run the main script:
+
+```
+python bagging.py
+```
+
+### Fetch a dataset from Kaggle:
+
+- When prompted, enter a search term to find datasets on Kaggle (e.g., "Titanic", "Housing Prices").
+- A list of datasets matching your search will be displayed. For example:
+
+![Titanic example](./images/pic1.png)
+
+- Enter the number corresponding to the dataset you want to download.
+![Titanic example 2](./images/pic2.png)
+
+### 3. Specify a folder to save the dataset:
+
+- Enter a name for a new folder where the dataset will be downloaded and unzipped.
+![Titanic example 3](./images/pic3.png)
+
+### 4. Dataset selection:
+
+- If the downloaded dataset contains multiple *.csv files*, the script will load the first *.csv file* by default.
+- The dataset is automatically loaded into a *Pandas DataFrame.*
+![Titanic example 4](./images/pic4.png)
+
+### 5. Follow the prompts in bagging.py:
+
+- Interactively select columns for analysis.
+- Handle missing values automatically.
+- Specify the target column (dependent variable).
+![Titanic example 5](./images/pic5.png)
+![Titanic example 6](./images/pic6.png)
