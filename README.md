@@ -2,4 +2,6 @@
 
 ## General Machine Learning Pipeline with Bagging Classifier
 
-Code in which an initial approach to decision trees and bagging will be made, and an attempt will be made to ensure that the model can be trained with any dataset coming from Kaggle (for this, we will again use the 'connect with Kaggle' project).
+This project implements a machine learning pipeline to analyze and predict survival on the Titanic dataset. It leverages a Bagging Classifier with decision trees to enhance model robustness. The project includes data preprocessing, model training, evaluation, and saving the results.
+<br>
+## Features
