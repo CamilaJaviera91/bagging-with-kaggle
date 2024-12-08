@@ -139,7 +139,7 @@ y_pred = bagging_model.predict(X_test)
 
 # Calculate the accuracy
 accuracy = accuracy_score(y_test, y_pred)
-print(f"\nThe accuracy of the Bagging model on the Titanic dataset is: {accuracy:.2f}")
+print(f"\nThe accuracy of the Bagging model on the dataset is: {accuracy:.2f}")
 
 """
 7. Save dataset as .csv file
