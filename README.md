@@ -78,3 +78,23 @@ python bagging.py
 - Specify the target column (dependent variable).
 ![Titanic example 5](./images/pic5.png)
 ![Titanic example 6](./images/pic6.png)
+
+### 6. Model Training and Evaluation:
+
+- The script splits the data into training and testing sets.
+- Trains a Bagging Classifier using decision trees.
+- Accuracy on the test set is displayed in the console.
+![Titanic example 7](./images/pic7.png)
+
+### 7. Save Results:
+
+- Processed data is saved as a *.csv file* in the *save/* directory.
+![Titanic example 8](./images/pic8.png)
+- Optionally, upload the dataset to Google Sheets using the *google_sheets_utils.py* script.
+![Titanic example 9](./images/pic9.png)
+![Titanic example 10](./images/pic10.png)
+
+## Acknowledgments
+
+- Kaggle datasets: [Kaggle Datasets.](https://www.kaggle.com/datasets)
+- Scikit-learn: [Scikit-learn Documentation.](https://scikit-learn.org/stable/)
