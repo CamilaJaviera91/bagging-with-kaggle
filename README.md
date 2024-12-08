@@ -55,16 +55,19 @@ python bagging.py
 - When prompted, enter a search term to find datasets on Kaggle (e.g., "Titanic", "Housing Prices").
 - A list of datasets matching your search will be displayed. For example:
 <br>
+
 ![Titanic example](./images/pic1.png)
 
 - Enter the number corresponding to the dataset you want to download.
 <br>
+
 ![Titanic example 2](./images/pic2.png)
 
 ### 3. Specify a folder to save the dataset:
 
 - Enter a name for a new folder where the dataset will be downloaded and unzipped.
 <br>
+
 ![Titanic example 3](./images/pic3.png)
 
 ### 4. Dataset selection:
@@ -72,6 +75,7 @@ python bagging.py
 - If the downloaded dataset contains multiple *.csv files*, the script will load the first *.csv file* by default.
 - The dataset is automatically loaded into a *Pandas DataFrame.*
 <br>
+
 ![Titanic example 4](./images/pic4.png)
 
 ### 5. Follow the prompts in bagging.py:
@@ -80,6 +84,7 @@ python bagging.py
 - Handle missing values automatically.
 - Specify the target column (dependent variable).
 <br>
+
 ![Titanic example 5](./images/pic5.png)
 ![Titanic example 6](./images/pic6.png)
 
@@ -89,16 +94,22 @@ python bagging.py
 - Trains a Bagging Classifier using decision trees.
 - Accuracy on the test set is displayed in the console.
 <br>
+
 ![Titanic example 7](./images/pic7.png)
 
 ### 7. Save Results:
 
 - Processed data is saved as a *.csv file* in the *save/* directory.
+
 ![Titanic example 8](./images/pic8.png)
+
+<br>
 - Optionally, upload the dataset to Google Sheets using the *google_sheets_utils.py* script.
 <br>
+
 ![Titanic example 9](./images/pic9.png)
 <br>
+
 ![Titanic example 10](./images/pic10.png)
 
 ## Acknowledgments
