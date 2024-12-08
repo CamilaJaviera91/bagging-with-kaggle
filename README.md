@@ -28,3 +28,8 @@ Before running the code, ensure you have the following:
 git clone https://github.com/<your-username>/<repository-name>.git 
 cd <repository-name>
 ```
+
+### 2. Intall required Python libraries
+```
+pip install -r requirements.txt
+```
