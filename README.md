@@ -54,11 +54,13 @@ python bagging.py
 
 - When prompted, enter a search term to find datasets on Kaggle (e.g., "Titanic", "Housing Prices").
 - A list of datasets matching your search will be displayed. For example:
+
 <br>
 
 ![Titanic example](./images/pic1.png)
 
 - Enter the number corresponding to the dataset you want to download.
+
 <br>
 
 ![Titanic example 2](./images/pic2.png)
@@ -66,6 +68,7 @@ python bagging.py
 ### 3. Specify a folder to save the dataset:
 
 - Enter a name for a new folder where the dataset will be downloaded and unzipped.
+
 <br>
 
 ![Titanic example 3](./images/pic3.png)
@@ -74,6 +77,7 @@ python bagging.py
 
 - If the downloaded dataset contains multiple *.csv files*, the script will load the first *.csv file* by default.
 - The dataset is automatically loaded into a *Pandas DataFrame.*
+
 <br>
 
 ![Titanic example 4](./images/pic4.png)
@@ -83,6 +87,7 @@ python bagging.py
 - Interactively select columns for analysis.
 - Handle missing values automatically.
 - Specify the target column (dependent variable).
+
 <br>
 
 ![Titanic example 5](./images/pic5.png)
@@ -108,6 +113,7 @@ python bagging.py
 <br>
 
 ![Titanic example 9](./images/pic9.png)
+
 <br>
 
 ![Titanic example 10](./images/pic10.png)
@@ -116,4 +122,5 @@ python bagging.py
 
 - Kaggle datasets: [Kaggle Datasets.](https://www.kaggle.com/datasets)
 - Scikit-learn: [Scikit-learn Documentation.](https://scikit-learn.org/stable/)
+- Pandas: [Pandas Documentation.](https://pandas.pydata.org/docs/)
 <br>
