@@ -19,3 +19,9 @@ Before running the code, ensure you have the following:
 - Kaggle API credentials for downloading the dataset.
 - Necessary Python libraries (see Dependencies).
 - Access to Google Sheets API (if using the csv_to_sheets function).
+
+## Instalation
+
+### 1. Clone this repository
+
+```git clone https://github.com/<your-username>/<repository-name>.git <br> cd <repository-name>
