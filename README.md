@@ -33,3 +33,7 @@ cd <repository-name>
 ```
 pip install -r requirements.txt
 ```
+
+### 3. Set up the Kaggle API:
+- Download your kaggle.json file from Kaggle API.
+- Place it in the appropriate directory (~/.kaggle on Unix or %USERPROFILE%\.kaggle on Windows).
