@@ -118,6 +118,13 @@ python bagging.py
 
 ![Titanic example 10](./images/pic10.png)
 
+### 8. Create a Looker Studio with googlesheets:
+
+- Looker Studio: [Example - Titanic Survival Rate](https://lookerstudio.google.com/reporting/9296e179-5f35-42b4-92d8-d36b4dee1999/page/ZgkYE)
+<br>
+
+![Titanic example 11](./images/pic11.png)
+
 ## Acknowledgments
 
 - Kaggle datasets: [Kaggle Datasets.](https://www.kaggle.com/datasets)
