@@ -88,18 +88,23 @@ def kaggle_connect(stdscr):
         #List all CSV files in the download directory
         csv_files = list(download_path.glob('*.csv'))
         if not csv_files:
-            print("\nNo CSV files found in the dataset.")
+             stdscr.addstr("\nNo CSV files found in the dataset.\n")
         else:
             #Select the first CSV file in the directory
             csv_file = csv_files[0]
-            print(f"Loading dataset from: {csv_files}")
+            stdscr.addstr(f"Loading dataset from: {csv_file}\n")
+            stdscr.refresh()
 
         #Load the dataset into a DataFrame
             df = pd.read_csv(csv_file)
-            print("Dataset loaded successfully.")
-        
+            stdscr.addstr("Dataset loaded successfully.\n")
+            stdscr.refresh()
+
+        stdscr.getch()
         return df
     
     except Exception as e:
-        print(f"An error ocurred: {e}")
+        stdscr.addstr(f"An error occurred: {e}\n")
+        stdscr.refresh()
+        stdscr.getch()
         return None
