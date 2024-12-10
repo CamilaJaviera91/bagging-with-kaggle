@@ -30,9 +30,11 @@ def kaggle_connect(stdscr):
 
         #List datasets related to the search term
         datasets = api.dataset_list(search=search_term)
-        datasets = list(datasets) #Convert to list for indexing
+        datasets = list(datasets)  # Convert to list for indexing
         if not datasets:
-            print("No datasets found for the search term.")
+            stdscr.addstr("No datasets found for the search term.\n")
+            stdscr.refresh()
+            stdscr.getch()
             return None
         
         #Display dataasets and prompt for selection
