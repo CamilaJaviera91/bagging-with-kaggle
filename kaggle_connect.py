@@ -1,8 +1,9 @@
 from kaggle.api.kaggle_api_extended import KaggleApi as ka
 import pandas as pd
 from pathlib import Path
+import curses
 
-def kaggle_connect():
+def kaggle_connect(stdscr):
     try:
         #"Download" base path
         base_folder = Path("./")
@@ -10,6 +11,10 @@ def kaggle_connect():
         #Initialize the API and authenticate
         api = ka()
         api.authenticate()
+
+        #Clear the screen for the curses menu
+        stdscr.clear()
+        stdscr.refresh()
 
         #Prompt for the search term
         search_term = input("Search for data (press Enter to skip): ").strip()
