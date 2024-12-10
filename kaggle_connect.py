@@ -64,9 +64,15 @@ def kaggle_connect(stdscr):
             return None
 
         #Destination folder for the download
-        new_folder = input("\nEnter the name of the new folder to store the dataset: ")
+        stdscr.addstr("\nEnter the name of the new folder to store the dataset: ")
+        stdscr.refresh()
+        curses.echo()
+        new_folder = stdscr.getstr().decode('utf-8').strip()
+        curses.noecho()
         if not new_folder:
-            print("\nFolder name cannot be empty")
+            stdscr.addstr("\nFolder name cannot be empty. Exiting.\n")
+            stdscr.refresh()
+            stdscr.getch()
             return None
         
         download_path = base_folder / new_folder
