@@ -57,7 +57,10 @@ def kaggle_connect(stdscr):
             data_ref = datasets[option - 1].ref
         
         except ValueError:
-            print("\nInvalid input. Please enter a number.")
+            curses.noecho()
+            stdscr.addstr("\nInvalid input. Please enter a number.\n")
+            stdscr.refresh()
+            stdscr.getch()
             return None
 
         #Destination folder for the download
