@@ -92,11 +92,12 @@ def kaggle_connect(stdscr):
         else:
             #Select the first CSV file in the directory
             csv_file = csv_files[0]
-            stdscr.addstr(f"Loading dataset from: {csv_file}")
+            stdscr.addstr(f" Loading dataset from: {csv_file}")
             stdscr.refresh()
 
         #Load the dataset into a DataFrame
             df = pd.read_csv(csv_file)
+            print("\n")
             stdscr.addstr("Dataset loaded successfully.")
             stdscr.refresh()
 
