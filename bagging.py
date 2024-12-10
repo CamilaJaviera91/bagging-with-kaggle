@@ -10,6 +10,7 @@ from sklearn.impute import SimpleImputer             # Handles missing (NaN) val
 from sklearn.preprocessing import LabelEncoder       # Encodes categorical labels (non-numeric variables) into numeric values
 from kaggle_connect import kaggle_connect            # Custom function to fetch the dataset using Kaggle API
 from google_sheets_utils import csv_to_sheets        # Custom function to transform .csv into a spreadsheet
+import curses                                        # Create text-based user interfaces (TUIs) in the terminal. 
 
 """
 2. Load and explore the dataset
