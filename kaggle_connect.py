@@ -37,15 +37,20 @@ def kaggle_connect(stdscr):
             stdscr.getch()
             return None
         
-        #Display dataasets and prompt for selection
-        print("\nDatasets found")
+        #Display datasets and prompt for selection
+        stdscr.addstr("\nDatasets found:\n")
         for i, dataset in enumerate(datasets):
-            print(f"{i + 1}: {dataset.ref}")
-        
+            stdscr.addstr(f"{i + 1}: {dataset.ref}\n")
+        stdscr.addstr("\nEnter the number of the dataset to download: ")
+        stdscr.refresh()
+        curses.echo()
         try:
-            option = int(input("\nEnter the number of the dataset to download: "))
+            option = int(stdscr.getstr().decode('utf-8'))
+            curses.noecho()
             if option < 1 or option > len(datasets):
-                print("\nInvalid selection, Exiting.")
+                stdscr.addstr("\nInvalid selection. Exiting.\n")
+                stdscr.refresh()
+                stdscr.getch()
                 return None
             
             #Dataset selection
