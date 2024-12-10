@@ -81,7 +81,8 @@ def kaggle_connect(stdscr):
         download_path.mkdir(parents=True, exist_ok=True)
 
         #Download the dataset and unzip it in the specified folder
-        print("\nDownloading dataset...")
+        stdscr.addstr("\nDownloading dataset...\n")
+        stdscr.refresh()
         api.dataset_download_files(data_ref, path=str(download_path), unzip=True)
 
         #List all CSV files in the download directory
