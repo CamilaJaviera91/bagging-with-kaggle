@@ -10,12 +10,19 @@ from sklearn.impute import SimpleImputer             # Handles missing (NaN) val
 from sklearn.preprocessing import LabelEncoder       # Encodes categorical labels (non-numeric variables) into numeric values
 from kaggle_connect import kaggle_connect            # Custom function to fetch the dataset using Kaggle API
 from google_sheets_utils import csv_to_sheets        # Custom function to transform .csv into a spreadsheet
+import curses                                        # Create text-based user interfaces (TUIs) in the terminal. 
 
 """
 2. Load and explore the dataset
 Load data using the kaggle_connect() function
 """
-data = kaggle_connect()
+
+# Create a new function so we can access kaggle_connect file
+def run_kaggle_download():
+    rkc = curses.wrapper(kaggle_connect)
+    return rkc
+
+data = run_kaggle_download()
 dataf = pd.DataFrame(data)
 print(f"Loaded data with {data.shape[0]} rows and {data.shape[1]} columns.")
 print("-" * 32)
