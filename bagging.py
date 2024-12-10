@@ -16,7 +16,13 @@ import curses                                        # Create text-based user in
 2. Load and explore the dataset
 Load data using the kaggle_connect() function
 """
-data = kaggle_connect()
+
+# Create a new function so we can access kaggle_connect file
+def run_kaggle_download():
+    rkc = curses.wrapper(kaggle_connect)
+    return rkc
+
+data = run_kaggle_download()
 dataf = pd.DataFrame(data)
 print(f"Loaded data with {data.shape[0]} rows and {data.shape[1]} columns.")
 print("-" * 32)
