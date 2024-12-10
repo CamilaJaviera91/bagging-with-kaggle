@@ -23,7 +23,9 @@ def kaggle_connect(stdscr):
         search_term = stdscr.getstr().decode('utf-8').strip()
         curses.noecho()
         if not search_term:
-            print("No search term entered. Exiting...")
+            stdscr.addstr("No search term entered. Exiting...\n")
+            stdscr.refresh()
+            stdscr.getch()
             return None
 
         #List datasets related to the search term
