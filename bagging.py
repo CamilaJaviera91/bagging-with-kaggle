@@ -19,8 +19,8 @@ Load data using the kaggle_connect() function
 
 # Create a new function so we can access kaggle_connect file
 def run_kaggle_download():
-    rkc = curses.wrapper(kaggle_connect)
-    return rkc
+    rkd = curses.wrapper(kaggle_connect)
+    return rkd
 
 data = run_kaggle_download()
 dataf = pd.DataFrame(data)
