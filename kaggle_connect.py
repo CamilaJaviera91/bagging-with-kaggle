@@ -17,7 +17,11 @@ def kaggle_connect(stdscr):
         stdscr.refresh()
 
         #Prompt for the search term
-        search_term = input("Search for data (press Enter to skip): ").strip()
+        stdscr.addstr("Search for data (press Enter to skip): ")
+        stdscr.refresh()
+        curses.echo()
+        search_term = stdscr.getstr().decode('utf-8').strip()
+        curses.noecho()
         if not search_term:
             print("No search term entered. Exiting...")
             return None
