@@ -9,7 +9,7 @@ from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 # Implements a decision tree classifier
 from sklearn.model_selection import train_test_split
 # Splits the dataset into training and test sets
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, mean_squared_error
 # Calculates the accuracy of a model
 from sklearn.impute import SimpleImputer
 # Handles missing (NaN) values in the dataset
