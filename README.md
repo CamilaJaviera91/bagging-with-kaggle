@@ -130,4 +130,5 @@ python bagging.py
 - Kaggle datasets: [Kaggle Datasets.](https://www.kaggle.com/datasets)
 - Scikit-learn: [Scikit-learn Documentation.](https://scikit-learn.org/stable/)
 - Pandas: [Pandas Documentation.](https://pandas.pydata.org/docs/)
+- Curses: [Curses Documentation.](https://docs.python.org/3/library/curses.html)
 <br>
