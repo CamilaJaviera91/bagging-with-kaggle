@@ -1,164 +1,191 @@
-"""
-1. Import necessary libraries
-"""
-import pandas as pd                                  # For creating and manipulating DataFrames and Series
-from sklearn.ensemble import BaggingClassifier       # Combines base estimators to improve robustness, especially for high-variance models
-from sklearn.tree import DecisionTreeClassifier      # Implements a decision tree classifier
-from sklearn.model_selection import train_test_split # Splits the dataset into training and test sets
-from sklearn.metrics import accuracy_score           # Calculates the accuracy of a model
-from sklearn.impute import SimpleImputer             # Handles missing (NaN) values in the dataset
-from sklearn.preprocessing import LabelEncoder       # Encodes categorical labels (non-numeric variables) into numeric values
-from kaggle_connect import kaggle_connect            # Custom function to fetch the dataset using Kaggle API
-from google_sheets_utils import csv_to_sheets        # Custom function to transform .csv into a spreadsheet
-import curses                                        # Create text-based user interfaces (TUIs) in the terminal. 
 
-"""
-2. Load and explore the dataset
-Load data using the kaggle_connect() function
-"""
+#Import necessary libraries
 
-# Create a new function so we can access kaggle_connect file
+import pandas as pd                                                         
+# For creating and manipulating DataFrames and Series
+from sklearn.ensemble import BaggingClassifier, BaggingRegressor
+# Combines base estimators to improve robustness, especially for high-variance models
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
+# Implements a decision tree classifier
+from sklearn.model_selection import train_test_split
+# Splits the dataset into training and test sets
+from sklearn.metrics import accuracy_score
+# Calculates the accuracy of a model
+from sklearn.impute import SimpleImputer
+# Handles missing (NaN) values in the dataset
+from sklearn.preprocessing import LabelEncoder
+# Encodes categorical labels (non-numeric variables) into numeric values
+from kaggle_connect import kaggle_connect
+# Custom function to fetch the dataset using Kaggle API
+from google_sheets_utils import csv_to_sheets
+# Custom function to transform .csv into a spreadsheet
+import curses
+# Create text-based user interfaces (TUIs) in the terminal. 
+import os
+# Provides a way to interact with the operating system. 
+
 def run_kaggle_download():
-    # Wrapper function to run Kaggle connect using curses.
+    """
+    Wrapper function to run Kaggle connect using curses.
+    """
     return curses.wrapper(kaggle_connect)
 
-data = run_kaggle_download()
-dataf = pd.DataFrame(data)
-print(f"Loaded data with {data.shape[0]} rows and {data.shape[1]} columns.")
-print("-" * 32)
-print("\n")
+def menu(stdscr):
+    stdscr.clear()
 
-# Print the columns to understand the structure of the data
-print("\nSelect columns from the list:")
-for column in dataf.columns:
-    print(f"- Column '{column}': type {dataf[column].dtype}")
-print("-" * 32)
+    # Variables
+    dataf = None
+    df = None
+    model = None
+    y = None
 
-"""
-3. Preprocess the data
-Prepare the dataset to make it suitable for modeling.
-"""
+    # Step 1: Download Dataset
+    stdscr.addstr("Step 1: Download Kaggle Dataset\n")
+    stdscr.addstr("Press Enter to start...\n")
+    stdscr.refresh()
+    stdscr.getstr()
 
-def select_columns():
-    """
-    Function to interactively select the columns to be used for analysis.
-    """
-    print("\nSelect the columns to be used")
-    print("-" * 32)
-    selected_columns = []
-    
-    while True:
-        col = input("Enter column name (or type 'e' to exit): ")
-        if col.lower() == "e":
-            break
+    dataf = run_kaggle_download()
+    if dataf is None or dataf.empty:
+        stdscr.addstr("Failed to load data or dataset is empty. Exiting...\n")
+        stdscr.refresh()
+        stdscr.getstr()
+        return
+
+    stdscr.addstr(f"\nLoaded data with {dataf.shape[0]} rows and {dataf.shape[1]} columns.\n")
+    stdscr.addstr("Press Enter to continue...\n")
+    stdscr.refresh()
+    stdscr.getstr()
+
+    # Step 2: Preprocessing and Selecting Features
+    stdscr.clear()
+    stdscr.addstr("Step 2: Selecting Features and Preprocessing\n")
+    stdscr.addstr("Columns available:\n")
+    for idx, col in enumerate(dataf.columns):
+        stdscr.addstr(f"{idx + 1}. {col}\n")
+    stdscr.addstr("Enter column numbers to select as features (comma-separated, without spaces):\n")
+    stdscr.refresh()
+
+    selected_columns = stdscr.getstr().decode('utf-8').strip().split(',')
+    selected_columns = [dataf.columns[int(idx) - 1] for idx in selected_columns if idx.isdigit()]
+    if not selected_columns:
+        stdscr.addstr("No columns selected. Exiting...\n")
+        stdscr.refresh()
+        stdscr.getstr()
+        return
+
+    df = dataf[selected_columns]
+    stdscr.addstr(f"Selected columns: {', '.join(selected_columns)}\n")
+    stdscr.addstr("Press Enter to preprocess data...\n")
+    stdscr.refresh()
+    stdscr.getstr()
+
+    # Preprocess Data
+    imputer = SimpleImputer(strategy="mean")
+    label_encoders = {}
+    for column in df.select_dtypes(include=["object"]).columns:
+        le = LabelEncoder()
+        df[column] = le.fit_transform(df[column])
+        label_encoders[column] = le
+    df = pd.DataFrame(imputer.fit_transform(df), columns=df.columns)
+
+    target_column = selected_columns[-1]
+    X, y = df.drop(target_column, axis=1), df[target_column]
+
+    # Step 3: Choose Model Type
+    stdscr.clear()
+    stdscr.addstr("Step 3: Choose Model Type\n")
+    stdscr.addstr("1. Classification\n")
+    stdscr.addstr("2. Regression\n")
+    stdscr.refresh()
+
+    model_choice = stdscr.getstr().decode('utf-8').strip()
+    if model_choice == "1":  # Classification
+        if pd.api.types.is_numeric_dtype(y) and len(y.unique()) > 20:
+            stdscr.addstr("The target column contains continuous values.\n")
+            stdscr.addstr("Would you like to:\n")
+            stdscr.addstr("1. Switch to regression.\n")
+            stdscr.addstr("2. Automatically convert the target column into categories.\n")
+            stdscr.refresh()
+            correction_choice = stdscr.getstr().decode('utf-8').strip()
+            if correction_choice == "1":
+                model = BaggingRegressor(DecisionTreeRegressor(), n_estimators=10, random_state=42)
+            elif correction_choice == "2":
+                y = pd.cut(y, bins=3, labels=["Low", "Medium", "High"])
+                model = BaggingClassifier(DecisionTreeClassifier(), n_estimators=10, random_state=42)
+            else:
+                stdscr.addstr("Invalid choice. Exiting...\n")
+                stdscr.refresh()
+                stdscr.getstr()
+                return
         else:
-            selected_columns.append(col)
-    
-    return selected_columns
-
-# Call the function to choose columns and create a subset of the data
-selected_columns = select_columns()
-subset_data = data[selected_columns]
-
-# Create a new DataFrame with the selected columns
-df = pd.DataFrame(subset_data)
-
-# Identify unique values in each column to decide how to encode or process the data
-print("\n")
-print("-" * 32)
-print("Unique values in columns:")
-for column in df.columns:
-    print(f"Column '{column}': {df[column].nunique()} unique values")
-
-# Identify columns with missing values
-print("\n")
-def identify_null_columns():
-    """
-    Function to identify columns with missing values.
-    """
-    columns_with_null = df.columns[df.isnull().any()].to_list()
-    print("-" * 32)
-    print("Columns with missing values:")
-    types_of_null_columns = df[columns_with_null].dtypes
-    return types_of_null_columns
-
-print(identify_null_columns())
-
-# Impute missing values
-for column in df:
-    # Impute missing values with the mean for numeric columns
-    if df[column].dtype in ['float64', 'int64']:
-        imputer = SimpleImputer(strategy='mean')
-        df[column] = imputer.fit_transform(df[column].values.reshape(-1, 1))
-        print(identify_null_columns())
+            model = BaggingClassifier(DecisionTreeClassifier(), n_estimators=10, random_state=42)
+    elif model_choice == "2":  # Regression
+        model = BaggingRegressor(DecisionTreeRegressor(), n_estimators=10, random_state=42)
     else:
-        print(f"Column '{column}' is not numeric (int or float).")
+        stdscr.addstr("Invalid choice. Exiting...\n")
+        stdscr.refresh()
+        stdscr.getstr()
+        return
 
-# Encode categorical variables with 2 or fewer unique values
-print("\n")
-print("-"*32)
-for column in df.columns:
-    if df[column].nunique() <= 2:
-        #Showing the original values
-        print(f"{column} : {df[column].unique()}")
-        encoder = LabelEncoder()
-        df[column] = encoder.fit_transform(df[column])
-        
-        #showing the encoded values
-        print(f"{column} : {df[column].unique()}")
+    # Step 4: Train Model
+    stdscr.clear()
+    stdscr.addstr("Step 4: Training Model\n")
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+    model.fit(X_train, y_train)
 
-# User input for target column
-target_column = input("\nEnter the column to be used as the target variable: ")        
+    stdscr.addstr("Model trained successfully.\n")
+    stdscr.addstr("Press Enter to evaluate the model...\n")
+    stdscr.refresh()
+    stdscr.getstr()
 
-# Split the data into features (X) and target (y)
-X = df.drop(target_column, axis=1)
-y = df[target_column]
+    # Step 5: Evaluate Model
+    stdscr.clear()
+    stdscr.addstr("Step 5: Evaluating Model\n")
+    if model_choice == "1":
+        y_pred = model.predict(X_test)
+        accuracy = accuracy_score(y_test, y_pred)
+        stdscr.addstr(f"The accuracy of the model is: {accuracy:.2f}\n")
+    else:
+        y_pred = model.predict(X_test)
+        mse = mean_squared_error(y_test, y_pred)
+        stdscr.addstr(f"The Mean Squared Error (MSE) of the model is: {mse:.2f}\n")
+    stdscr.addstr("Press Enter to save dataset to CSV...\n")
+    stdscr.refresh()
+    stdscr.getstr()
 
-"""
-4. Split the data into training and testing sets
-Ensures fair evaluation of the model
-"""
+    # Step 6: Save Dataset to CSV
+    stdscr.clear()
+    stdscr.addstr("Step 6: Saving Dataset to CSV\n")
+    os.makedirs('./save', exist_ok=True)
+    
+    stdscr.addstr("Enter the filename (without extension): ")
+    stdscr.refresh()
+    file = stdscr.getstr().decode('utf-8').strip()  # Capturar el nombre del archivo ingresado por el usuario
+    
+    if not file:  # Usar un nombre predeterminado si el usuario no ingresa nada
+        file = "output_dataset"
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+    df.to_csv(f'./save/{file}.csv', index=False)  # Guardar el archivo con el nombre proporcionado
+    stdscr.addstr(f"Dataset saved as './save/{file}.csv'\n")
+    stdscr.addstr("Press Enter to export to Google Sheets...\n")
+    stdscr.refresh()
+    stdscr.getstr()
 
-"""
-5. Train the Bagging model
-Build a Bagging model using decision trees as the base estimator.
-"""
+    # Step 7: Export Dataset to Google Sheets
+    stdscr.clear()
+    stdscr.addstr("Step 7: Exporting Dataset to Google Sheets\n")
+    csv_to_sheets()
+    stdscr.addstr("Dataset exported to Google Sheets successfully.\n")
+    stdscr.addstr("Press Enter to finish...\n")
+    stdscr.refresh()
+    stdscr.getstr()
 
-# Initialize the Bagging model
-bagging_model = BaggingClassifier(
-    estimator=DecisionTreeClassifier(),
-    n_estimators=10,
-    random_state=42
-)
+    # End of the program
+    stdscr.clear()
+    stdscr.addstr("All steps completed successfully! Exiting...\n")
+    stdscr.refresh()
+    stdscr.getstr()
 
-# Train the model
-bagging_model.fit(X_train, y_train)
 
-"""
-6. Evaluate the model
-Measure the accuracy of the model on the test set.
-"""
-
-# Make predictions on the test set
-y_pred = bagging_model.predict(X_test)
-
-# Calculate the accuracy
-accuracy = accuracy_score(y_test, y_pred)
-print(f"\nThe accuracy of the Bagging model on the dataset is: {accuracy:.2f}")
-
-"""
-7. Save dataset as .csv file
-"""
-
-output_name = input("\nEnter the name to save the .csv file: ")
-output_dataset = df.to_csv(f"./save/{output_name}.csv", index=False)
-
-print(f"\nThe dataset has been saved as '{output_name}.csv'")
-
-"""
-8. Save data set into google spreadsheet
-"""
-
-csv_to_sheets()
+curses.wrapper(menu)
