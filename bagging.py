@@ -1,16 +1,15 @@
-
-#Import necessary libraries
+# Import necessary libraries
 
 import pandas as pd                                                         
 # For creating and manipulating DataFrames and Series
 from sklearn.ensemble import BaggingClassifier, BaggingRegressor
 # Combines base estimators to improve robustness, especially for high-variance models
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
-# Implements a decision tree classifier
+# Implements a decision tree classifier or regressor
 from sklearn.model_selection import train_test_split
 # Splits the dataset into training and test sets
 from sklearn.metrics import accuracy_score, mean_squared_error
-# Calculates the accuracy of a model
+# Calculates the accuracy of a model or the mean squared error
 from sklearn.impute import SimpleImputer
 # Handles missing (NaN) values in the dataset
 from sklearn.preprocessing import LabelEncoder
@@ -20,9 +19,9 @@ from kaggle_connect import kaggle_connect
 from google_sheets_utils import csv_to_sheets
 # Custom function to transform .csv into a spreadsheet
 import curses
-# Create text-based user interfaces (TUIs) in the terminal. 
+# Create text-based user interfaces (TUIs) in the terminal
 import os
-# Provides a way to interact with the operating system. 
+# Provides a way to interact with the operating system
 
 def run_kaggle_download():
     """
@@ -161,12 +160,12 @@ def menu(stdscr):
     
     stdscr.addstr("Enter the filename (without extension): ")
     stdscr.refresh()
-    file = stdscr.getstr().decode('utf-8').strip()  # Capturar el nombre del archivo ingresado por el usuario
+    file = stdscr.getstr().decode('utf-8').strip()
     
-    if not file:  # Usar un nombre predeterminado si el usuario no ingresa nada
+    if not file:
         file = "output_dataset"
 
-    df.to_csv(f'./save/{file}.csv', index=False)  # Guardar el archivo con el nombre proporcionado
+    df.to_csv(f'./save/{file}.csv', index=False)
     stdscr.addstr(f"Dataset saved as './save/{file}.csv'\n")
     stdscr.addstr("Press Enter to export to Google Sheets...\n")
     stdscr.refresh()
@@ -186,6 +185,5 @@ def menu(stdscr):
     stdscr.addstr("All steps completed successfully! Exiting...\n")
     stdscr.refresh()
     stdscr.getstr()
-
 
 curses.wrapper(menu)
